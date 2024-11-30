@@ -9,3 +9,4 @@ $url = isset($_GET['url']) ? $_GET['url'] : '';
 
 $router = new Router();
 $router->route($url);
+?>
