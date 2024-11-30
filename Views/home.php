@@ -15,7 +15,7 @@
 
             <!-- Navigation Links -->
             <nav>
-                <p><a href="index.php?url=user">Go to User Page</a></p>
+                <p><a href="/phpnettside/public/index.php?url=User/login">Go to User Page</a></p>
 
             </nav>
         </div>
