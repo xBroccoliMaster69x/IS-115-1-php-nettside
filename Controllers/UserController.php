@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 require_once '../Models/user.php';
 
@@ -50,3 +51,5 @@ class UserController extends Controller {
     }
 
 }
+=======
+>>>>>>> 06bfc943c7500c868494991ced202e24c896d362

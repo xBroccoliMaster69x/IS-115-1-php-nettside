@@ -19,7 +19,11 @@ class UserModel {
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':adresse', $adresse);
         $stmt->bindValue(':brukernavn', $brukernavn);
+<<<<<<< HEAD
         $stmt->bindValue(':passord', $passord); // bruker allerede hashed passord fra vontroller
+=======
+        $stmt->bindValue(':passord', password_hash($passord, PASSWORD_DEFAULT));
+>>>>>>> 06bfc943c7500c868494991ced202e24c896d362
 
        return $stmt->execute();
      } catch (PDOException $e) {
