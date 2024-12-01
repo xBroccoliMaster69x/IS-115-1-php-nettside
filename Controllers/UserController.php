@@ -3,8 +3,6 @@ require_once '../Models/user.php';
 
 class UserController extends Controller {
     public function login() {
-        echo "Routing to UserController::login"; // Debug
-
         $this->view('login');
     }
 
@@ -15,11 +13,14 @@ class UserController extends Controller {
 
             $userModel = new UserModel();
             $user = $userModel->getUserByUsername($username);
+            $password = trim($_POST['passord'] ?? ''); // Trimmer input ved innlogging i tilfelle, denne er deretter sammenligned med lagred hashed passord (etter trimming)
 
             if (!$user) {
                 die("User not found in database."); //sjekk om det ble funnet en bruker eller ikke 
             }
             // Debug passordproblemet
+            var_dump($username);
+            var_dump($user['brukernavn']);
             var_dump($password);
             var_dump($user['passord']);
             var_dump(password_verify('Anakat01.', '$2y$10$yKwKyWkZKRUeAxmkdbH1jeUpdlCkucLC0bMrGaEnt9D'));

@@ -13,8 +13,9 @@ class Validator {
      */
     public function validate($formfield, $fieldvalue, $validationtype, $params = []) {
         
-        $fieldvalue = htmlspecialchars(strip_tags(trim($fieldvalue)));
-
+        if ($validationtype !== 'password') {
+            $fieldvalue = htmlspecialchars(strip_tags(trim($fieldvalue)));
+        }
         
         switch ($validationtype) {
             case 'email':
