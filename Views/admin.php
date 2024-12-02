@@ -1,5 +1,6 @@
+
 <?php
-include '../Public/header.php'; // Include the reusable header
+include '../Public/header.php'; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +11,7 @@ include '../Public/header.php'; // Include the reusable header
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <h1>Welcome to the <?= isset($title) ? $title : 'Admin Panel'; ?></h1>
+    <h1>Velkommen til <?= isset($title) ? $title : 'Admin Panel'; ?></h1>
 
     <form action="index.php?url=admin" method="POST">
         <!-- Button for viewing bookings -->
@@ -31,3 +32,8 @@ include '../Public/header.php'; // Include the reusable header
     </div>
 </body>
 </html>
+
+
+
+
+<?php

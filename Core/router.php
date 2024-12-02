@@ -15,6 +15,18 @@ class Router {
             $controller = new $controllerName;
 
 
+             // Enforce access control for admin routes
+             if ($controllerName === 'AdminController') {
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start(); // Start session if it hasn't started already
+                }
+                if (!isset($_SESSION['user']) || $_SESSION['user']['is_admin'] != 1) {
+                    // Redirect to login if not logged in or not an admin
+                    header("Location: /phpnettside/public/index.php?url=User/login");
+                    exit;
+                }
+            }
+
             if (method_exists($controller, $actionName)) { //dersom metoden finnes i klassen som er kontrolleren da kalles denne, dersom subpage ikke er spesifisert er dette index() metoden
 
                 call_user_func_array([$controller, $actionName], array_slice($urlParts, 2)); //caller $actionname fra controlleren, og passerer argumenter til denne utfra url.
