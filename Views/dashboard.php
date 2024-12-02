@@ -1,17 +1,22 @@
+<?php
+include '../Public/header.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>User Dashboard</title>
+    <title>Bruker Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <h1>Welcome, <?= htmlspecialchars($user['fornavn']) ?></h1>
-    <p>Here are your details:</p>
+    <h1>Velkommen <?= htmlspecialchars($user['fornavn']) ?></h1>
+    <p>Din informasjon:</p>
     <ul>
-        <li>First Name: <?= htmlspecialchars($user['fornavn']) ?></li>
-        <li>Last Name: <?= htmlspecialchars($user['etternavn']) ?></li>
+        <li>Fornavn: <?= htmlspecialchars($user['fornavn']) ?></li>
+        <li>Etternavn: <?= htmlspecialchars($user['etternavn']) ?></li>
         <li>Email: <?= htmlspecialchars($user['email']) ?></li>
-        <li>Phone: <?= htmlspecialchars($user['mobilnummer']) ?></li>
+        <li>Mobilnummer: <?= htmlspecialchars($user['mobilnummer']) ?></li>
     </ul>
+    <br>
     <p><a href="/phpnettside/public/index.php?url=Home/index">tilbake til hjemmesiden</a></p>
 </body>
 </html>

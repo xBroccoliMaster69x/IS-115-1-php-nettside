@@ -27,16 +27,14 @@ class RegistrationController extends Controller {
             $data['etternavn'] = $validator->validate('etternavn', $data['etternavn'], 'maxLength', ['length' => 50]);
             $data['mobilnummer'] = $validator->validate('mobilnummer', $data['mobilnummer'], 'phone');
             $data['email'] = $validator->validate('email', $data['email'], 'email');
-            $data['brukernavn'] = $validator->validate('brukernavn', $data['brukernavn'], 'maxLength', ['length' => 20]);
-            $data['passord'] = $validator->validate('passord', $data['passord'], 'password');
-
+            $data['passord'] = $_POST['passord'] ?? ''; // beholder rå passord for å unngå endringer før hashing
+            
+ 
             // feilsjekk på validering
             if ($validator->printErrors()) {
                 return;
             }
-
-            // Hash passord
-            $data['passord'] = password_hash($data['passord'], PASSWORD_DEFAULT);
+            $data['passord'] = password_hash($data['passord'], PASSWORD_DEFAULT); // hasher 
 
             // lagrer bruker til database
             $userModel = new UserModel();
@@ -71,4 +69,3 @@ class RegistrationController extends Controller {
         }
     }
 }
-?>

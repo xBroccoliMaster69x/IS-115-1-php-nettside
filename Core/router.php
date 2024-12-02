@@ -1,5 +1,6 @@
-<?php
+<?php 
 
+//håndterer URL routing, forespørsler går til riktige kontrollere metoder 
 class Router {
     public function route($url) {
 
@@ -18,10 +19,10 @@ class Router {
 
                 call_user_func_array([$controller, $actionName], array_slice($urlParts, 2)); //caller $actionname fra controlleren, og passerer argumenter til denne utfra url.
             } else {
-                echo "Action not found!";
+                echo "Action not found!"; //hvis ingen metode funnet
             }
         } else {
-            echo "Controller not found!";
+            echo "Controller not found!"; //hvis ingen controller funnet 
         }
     }
 }

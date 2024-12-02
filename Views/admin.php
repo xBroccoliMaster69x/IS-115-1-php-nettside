@@ -1,3 +1,6 @@
+<?php
+include '../Public/header.php'; // Include the reusable header
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

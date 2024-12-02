@@ -3,8 +3,6 @@ require_once '../Models/user.php';
 
 class UserController extends Controller {
     public function login() {
-        echo "Routing to UserController::login"; // Debug
-
         $this->view('login');
     }
 
@@ -15,21 +13,23 @@ class UserController extends Controller {
 
             $userModel = new UserModel();
             $user = $userModel->getUserByUsername($username);
+            $password = trim($_POST['passord'] ?? ''); // Trimmer input ved innlogging i tilfelle, denne er deretter sammenligned med lagred hashed passord (etter trimming)
 
             if (!$user) {
                 die("User not found in database."); //sjekk om det ble funnet en bruker eller ikke 
             }
             // Debug passordproblemet
+            var_dump($username);
+            var_dump($user['brukernavn']);
             var_dump($password);
-            var_dump($user['passord']);
-            var_dump(password_verify('Anakat01.', '$2y$10$yKwKyWkZKRUeAxmkdbH1jeUpdlCkucLC0bMrGaEnt9D'));
-    
+            var_dump($user['passord']); 
 
 
             if ($user && password_verify($password, $user['passord'])) {
                 session_start();
                 $_SESSION['user'] = $user;
-
+    
+                // Redirecter til dashboard basert på type bruker 
                 header("Location: /phpnettside/public/index.php?url=User/dashboard");
                 exit;
             } else {
@@ -40,13 +40,31 @@ class UserController extends Controller {
 
     public function dashboard() {
         session_start();
-        if (!isset($_SESSION['user'])) {
-            header("Location: /phpnettside/public/index.php?url=User/login");
-            exit;
-        }
-
-        $this->view('dashboard', ['user' => $_SESSION['user']]);
+        // Check if the user is logged in
+    if (!isset($_SESSION['user'])) {
+        header("Location: /phpnettside/public/index.php?url=User/login");
+        exit;
     }
 
+    // 
+    if ($_SESSION['user']['is_manager'] == 1) {
+        
+        $this->view('manager', ['user' => $_SESSION['user']]);
+    } else {
+       
+        $this->view('dashboard', ['user' => $_SESSION['user']]);
+    }
+    }
+
+
+    public function logout() {
+        session_start();
+        session_unset(); // renser bort alle variabler fra session
+        session_destroy(); // ødelegger session
+        header("Location: /phpnettside/public/index.php?url=User/login"); 
+        exit;
+    }
+    
+
+
 }
-?>

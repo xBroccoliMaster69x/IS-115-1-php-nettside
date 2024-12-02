@@ -1,7 +1,11 @@
+<?php
+include '../Public/header.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Registreringsskjema</title>
+    <title>Registreringsskjema</title><!--linker til stylesheet-->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <h1>Registreringsskjema</h1>
@@ -23,5 +27,7 @@
         <input type="password" name="passord" placeholder="Passord" required>
         <button type="submit">Registrer bruker</button>
     </form>
+    <br>
+    <p><a href="/phpnettside/public/index.php?url=Home/index">Tilbake til hjemmesiden</a></p>
 </body>
 </html>
