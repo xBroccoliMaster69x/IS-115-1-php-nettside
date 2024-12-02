@@ -1,9 +1,8 @@
 <?php
-require_once ('../Core/database.php');
-class searchModel {
+class SearchModel {
     private $pdo;
 
-    public function __construct() { 
+    public function __construct() {
         $host = 'localhost';
         $db = 'hoteldb';
         $user = 'root';
@@ -24,36 +23,50 @@ class searchModel {
         }
     }
 
-    public function getAvailableRooms($startDate, $endDate) {
+    public function getAvailableRooms($startDate, $endDate, $closeToElevator = false, $acapacity = null, $ccapacity = null) {
         $query = "
-            SELECT r.*
+            SELECT r.ID, r.roomname, r.floor, r.closetoelevator, rt.typename, rt.descript
             FROM rooms r
             LEFT JOIN booking b ON r.ID = b.room_ID 
                 AND (
                     (b.startdate <= :endDate AND b.enddate >= :startDate) -- Overlapping booking
                 )
+            LEFT JOIN roomtype rt ON r.roomtype_ID = rt.ID
             WHERE b.ID IS NULL
         ";
-
+    
+        if ($closeToElevator) {
+            $query .= " AND r.closetoelevator = 1";
+        }
+        if ($acapacity !== null) {
+            $query .= " AND rt.acapacity >= :acapacity";
+        }
+        if ($ccapacity !== null) {
+            $query .= " AND rt.ccapacity >= :ccapacity";
+        }
+    
         try {
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute([
-                ':startDate' => $startDate,
-                ':endDate' => $endDate
-            ]);
-
+            $stmt->bindValue(':startDate', $startDate);
+            $stmt->bindValue(':endDate', $endDate);
+    
+            if ($acapacity !== null) {
+                $stmt->bindValue(':acapacity', $acapacity, PDO::PARAM_INT);
+            }
+            if ($ccapacity !== null) {
+                $stmt->bindValue(':ccapacity', $ccapacity, PDO::PARAM_INT);
+            }
+    
+            $stmt->execute();
+    
             return $stmt->fetchAll();
         } catch (\PDOException $e) {
             throw new \PDOException("Error fetching available rooms: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+    
+    
+    
+    
+    
 }
-
-$startDate = '2024-12-10';
-$endDate = '2025-12-15';
-$a = new searchModel();
-$availableRooms = $a->getAvailableRooms($startDate, $endDate);
-foreach ($availableRooms as $room) {
-    echo "Room ID: " . $room['ID'] . ", Name: " . $room['roomname'] . ", Floor: " . $room['floor'] . "\n";
-}
-?>

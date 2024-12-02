@@ -4,6 +4,9 @@ require_once("..//Models/admin.php");
 class AdminController extends Controller {
     private $AdminModel;
 
+    public function __construct(){
+        $this->AdminModel = new AdminModel();
+    }
     public function index() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -15,7 +18,7 @@ class AdminController extends Controller {
         }
     }
      public function handleRequest() {
-        $this->AdminModel = new AdminModel();
+        //$this->AdminModel = new AdminModel();
 
         if (isset($_POST['action'])) {
             $action = $_POST['action'];
@@ -42,7 +45,7 @@ class AdminController extends Controller {
     }
 
     public function showBookings($ID = null) {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         $bookings = $this->AdminModel->getBookings($ID);
     
@@ -97,7 +100,7 @@ class AdminController extends Controller {
     }
 
     public function saveBooking() {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -119,7 +122,7 @@ class AdminController extends Controller {
     }
         
     public function editBooking($ID) {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         $booking = $this->AdminModel->getBookings($ID)[0]; // Fetch booking by ID
     
@@ -154,7 +157,7 @@ class AdminController extends Controller {
     }
     
     public function updateBooking() {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -177,7 +180,7 @@ class AdminController extends Controller {
     }
     
     public function deleteBooking($ID) {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         if ($this->AdminModel->deleteBooking($ID)) {
             echo 'Booking deleted successfully!';
@@ -239,7 +242,7 @@ class AdminController extends Controller {
     }
 
     public function saveRoom() {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -259,7 +262,7 @@ class AdminController extends Controller {
         echo '<br><a href="index.php?url=admin/displayRooms">Back to Rooms</a>';
     }
     public function editRoom($id) {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         $room = $this->AdminModel->getRooms($id)[0]; // Fetch room by ID
     
@@ -290,7 +293,7 @@ class AdminController extends Controller {
     }
 
     public function updateRoom() {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -312,7 +315,7 @@ class AdminController extends Controller {
     }
 
     public function deleteRoom($id) {
-        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+        //$this->AdminModel = new AdminModel(); // Initialize the AdminModel
     
         if ($this->AdminModel->deleteRoom($id)) {
             echo 'Room deleted successfully!';
@@ -379,7 +382,7 @@ class AdminController extends Controller {
 
     public function editRoomType($ID) {
         // Fetch the room type details
-        $this->AdminModel = new AdminModel();
+        //$this->AdminModel = new AdminModel();
         $roomType = $this->AdminModel->getRoomType($ID)[0]; // Assuming ID is unique
     
         if ($roomType) {
@@ -411,7 +414,7 @@ class AdminController extends Controller {
 
 
     public function saveRoomType() {
-        $this->AdminModel = new AdminModel();
+        //$this->AdminModel = new AdminModel();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'typename' => $_POST['typename'],
@@ -429,7 +432,7 @@ class AdminController extends Controller {
     }
 
     public function updateRoomType() {
-        $this->AdminModel = new AdminModel();
+        //$this->AdminModel = new AdminModel();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'ID' => $_POST['ID'],
@@ -451,7 +454,7 @@ class AdminController extends Controller {
     }
 
     public function deleteRoomType($ID) {
-        $this->AdminModel = new AdminModel();
+        //$this->AdminModel = new AdminModel();
         if ($this->AdminModel->deleteRoomType($ID)) {
             echo 'Room type deleted successfully!';
         } else {

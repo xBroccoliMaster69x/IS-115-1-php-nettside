@@ -1,40 +1,64 @@
 <?php
 include '../Public/header.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
+    <title><?= isset($title) ?></title>
     <!--linker til stylesheet-->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+    <h1>Search for Available Rooms</h1>
+    
 
-<!-- ----------------------------------------->
-<?php
-class homeView{
-    function renderOrder(){
-        echo ' <form action="room_admin_index.php" method="POST">
-        Insjekk Dato: <input type="date" name="insjekk" ><br>
-        Utsjekk Dato: <input type="date" name="utsjekk" ><br>
-        
-        Enkeltrom: <input type ="radio" id= "singleRoom" name="roomType" value="1"><br>
-        Dobbeltrom: <input type ="radio" id= "doubleRoom" name="roomType" value="2"><br>
-        Junior Suite: <input type ="radio" id= "juniorSuite" name="roomType" value="3"><br>
+    <form action="index.php?url=home/searchRooms" method="POST">
+        <label for="insjekk">Check-in Date:</label><br>
+        <input type="date" id="insjekk" name="insjekk" required><br><br>
 
-        Kapasitet Voksne: <input type="number" name="aCapacity" min= "1" max "3" value=""><br>
-        Kapasitet Barn: <input type="number" name="cCapacity" min= "0" max "3" value=""><br>
-        Nærme Heis: <input type= "checkbox" name= "closeToElevator" value="true"><br>       
-        <input type="submit">
-    </form>';
-    }
+        <label for="utsjekk">Check-out Date:</label><br>
+        <input type="date" id="utsjekk" name="utsjekk" required><br><br>
 
-}
-$a = new homeView;
-$a->renderOrder();
-?>
+        <label for="acapacity">Adult Capacity:</label><br>
+        <input type="number" id="acapacity" name="acapacity" required><br><br>
 
+        <label for="ccapacity">Child Capacity:</label><br>
+        <input type="number" id="ccapacity" name="ccapacity" required><br><br>
+
+        <label for="closetoelevator">Close to Elevator:</label>
+        <input type="checkbox" id="closetoelevator" name="closetoelevator" value="1"><br><br>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <?php if (isset($rooms) && !empty($rooms)): ?>
+    <h2>Available Rooms</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Room Name</th>
+            <th>Floor</th>
+            <th>Close to Elevator</th>
+            <th>Type Name</th>
+            <th>Description</th>
+        </tr>
+        <?php foreach ($rooms as $room): ?>
+            <tr>
+                <td><?= $room['ID'] ?></td>
+                <td><?= $room['roomname'] ?></td>
+                <td><?= $room['floor'] ?></td>
+                <td><?= $room['closetoelevator'] ? 'Yes' : 'No' ?></td>
+                <td><?= $room['typename'] ?></td>
+                <td><?= $room['descript'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php elseif (isset($rooms)): ?>
+    <p>No rooms available for the selected criteria.</p>
+<?php endif; ?>
+
+</body>
+</html>
 
