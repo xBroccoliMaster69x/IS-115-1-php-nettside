@@ -12,7 +12,7 @@ class Controller {
     }
 
  
-    public function addRoom($roomNumber, $floor, $roomType, $aCapacity, $cCapacity, $closeToElevator) {
+    private function addRoom($roomNumber, $floor, $roomType, $aCapacity, $cCapacity, $closeToElevator) {
 
         $roomData = array(         //lager assiciativ array for datafelt fra hoteldb
             "roomNumber"        =>  $roomNumber,

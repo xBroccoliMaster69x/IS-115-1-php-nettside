@@ -7,3 +7,4 @@ class HomeController extends Controller {
         
     }
 }
+?>
