@@ -1,9 +1,11 @@
+<link rel="stylesheet" href="assets/css/style.css">
 <?php
 require_once("..//Models/admin.php");
+require_once '../Public/header.php'; 
 
 class AdminController extends Controller {
     private $AdminModel;
-
+        
     public function index() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -206,6 +208,7 @@ class AdminController extends Controller {
                 // Edit and Delete buttons
                 echo '<a href="index.php?url=admin/editRoom/' . $room['ID'] . '" class="edit-button">Edit</a> ';
                 echo '<a href="index.php?url=admin/deleteRoom/' . $room['ID'] . '" class="delete-button" onclick="return confirm(\'Are you sure you want to delete this room?\')">Delete</a>';
+                echo '<a href="index.php?url=admin/setRoomUnavailable/' . $room['ID'] . '" class="unavailable-button">Sett utilgjengelig</a>';
                 echo "<hr>";
                 echo "</div>";
             }
@@ -321,7 +324,51 @@ class AdminController extends Controller {
         }
     
         echo '<br><a href="index.php?url=admin/displayRooms">Back to Rooms</a>';
+        
     }
+
+    public function setRoomUnavailable($roomID) {
+        $this->AdminModel = new AdminModel(); // Initialize the AdminModel
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'room_ID' => $_POST['roomID'],
+                'user_ID' => $_POST['user_ID'], // Dynamically fetched from POST
+                'startdate' => $_POST['startDate'],
+                'enddate' => $_POST['endDate'],
+            ];
+        
+            if ($this->AdminModel->setRoomUnavailable($data)) {
+                echo 'Rommet er nå utilgjengelig<br>';
+            } else {
+                echo 'Kunne ikke sette rommet som utilgjengelig<br>';
+            }
+        
+            echo '<a href="index.php?url=admin/displayRooms">Tilbake til Rooms</a>';
+        } else {
+            
+            echo '<h2>Sett rom som utilgjengelig</h2>';
+            echo '
+                <form action="index.php?url=admin/setRoomUnavailable/' . $roomID . '" method="POST">
+                    <input type="hidden" name="roomID" value="' . $roomID . '">
+                    <label for="user_ID">User ID:</label><br>
+                    <input type="number" id="user_ID" name="user_ID" required><br><br>
+                    
+                    <label for="startDate">Fra Dato:</label><br>
+                    <input type="date" id="startDate" name="startDate" required><br><br>
+        
+                    <label for="endDate">Til Dato:</label><br>
+                    <input type="date" id="endDate" name="endDate" required><br><br>
+        
+                    <button type="submit">Sett som utilgjengelig</button>
+                </form>
+            ';
+        }
+        
+    }    
+    
+
+
 //Rooms end--------------------------------------------------------------------------------------------------------------       
     
     

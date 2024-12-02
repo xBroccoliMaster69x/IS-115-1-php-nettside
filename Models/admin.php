@@ -139,6 +139,20 @@ class AdminModel{
     }
                 
 
+    public function setRoomUnavailable($data) {
+        $stmt = $this->pdo->prepare("INSERT INTO booking (room_ID, user_ID, startdate, enddate, type) 
+                                     VALUES (:room_ID, :user_ID, :startdate, :enddate, :type)");
+    
+        // Bind parameters from the `$data` array to the query
+        $stmt->bindParam(':room_ID', $data['room_ID'], PDO::PARAM_INT);
+        $stmt->bindParam(':user_ID', $data['user_ID'], PDO::PARAM_INT);         $stmt->bindParam(':startdate', $data['startdate']);
+        $stmt->bindParam(':enddate', $data['enddate']);
+        $stmt->bindValue(':type', 2, PDO::PARAM_INT); // type 2 for utilgjengelig
+    
+        return $stmt->execute();
+    }
+    
+
 
     /* getter metode, returnerer alle roomtype dersom param ikk er satt.*/
     public function getRoomType($ID = null) {
@@ -173,5 +187,5 @@ class AdminModel{
         return $stmt->execute();
     }
 //#endregion  
-
+}
 ?>

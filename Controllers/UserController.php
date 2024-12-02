@@ -19,16 +19,18 @@ class UserController extends Controller {
                 die("User not found in database."); //sjekk om det ble funnet en bruker eller ikke 
             }
             // Debug passordproblemet
-            var_dump($username);
-            var_dump($user['brukernavn']);
-            var_dump($password);
-            var_dump($user['passord']); 
+           
+            var_dump("Input Password (length " . strlen($password) . "):", $password);
+            var_dump("Stored Hash in DB:", $user['passord']);
+            var_dump(password_verify($password, $user['passord']));
 
+        
 
             if ($user && password_verify($password, $user['passord'])) {
                 session_start();
                 $_SESSION['user'] = $user;
-    
+                
+                
                 // Redirecter til dashboard basert på type bruker 
                 header("Location: /phpnettside/public/index.php?url=User/dashboard");
                 exit;
@@ -39,17 +41,19 @@ class UserController extends Controller {
     }
 
     public function dashboard() {
-        session_start();
-        // Check if the user is logged in
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start(); 
+        }
+        // sjekker om key user er finnes i session 
     if (!isset($_SESSION['user'])) {
         header("Location: /phpnettside/public/index.php?url=User/login");
         exit;
     }
 
     // 
-    if ($_SESSION['user']['is_manager'] == 1) {
+    if ($_SESSION['user']['is_admin'] == 1) {
         
-        $this->view('manager', ['user' => $_SESSION['user']]);
+        $this->view('admin', ['user' => $_SESSION['user']]);
     } else {
        
         $this->view('dashboard', ['user' => $_SESSION['user']]);
@@ -58,7 +62,9 @@ class UserController extends Controller {
 
 
     public function logout() {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start(); // 
+        }
         session_unset(); // renser bort alle variabler fra session
         session_destroy(); // ødelegger session
         header("Location: /phpnettside/public/index.php?url=User/login"); 

@@ -1,5 +1,6 @@
+
 <?php
-include '../Public/header.php'; // Include the reusable header
+include '../Public/header.php'; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,9 +8,10 @@ include '../Public/header.php'; // Include the reusable header
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($title) ? $title : 'Admin Panel'; ?></title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <h1>Welcome to the <?= isset($title) ? $title : 'Admin Panel'; ?></h1>
+    <h1>Velkommen til <?= isset($title) ? $title : 'Admin Panel'; ?></h1>
 
     <form action="index.php?url=admin" method="POST">
         <!-- Button for viewing bookings -->
@@ -30,3 +32,8 @@ include '../Public/header.php'; // Include the reusable header
     </div>
 </body>
 </html>
+
+
+
+
+<?php
