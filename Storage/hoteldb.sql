@@ -61,7 +61,7 @@ CREATE TABLE `rooms` (
 -- Dumping data for table `rooms`
 --
 
-INSERT INTO `rooms` (`ID`, `roomname`, `floor`, `roomtype_ID`, `closetoelevator`) VALUES
+INSERT INTO `rooms` (`ID`, `roomname`, `floor`, `roomtype_ID`, `closetoelevator`) VAL
 (1, '101', 1, 1, 1),
 (2, '102', 1, 1, 1),
 (3, '103', 1, 1, 1),
@@ -125,7 +125,7 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `adresse` text NOT NULL,
   `brukernavn` varchar(50) NOT NULL,
-  `passord` varchar(50) NOT NULL,
+  `passord` varchar(255) NOT NULL,
   `registreringsdato` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `is_admin` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
