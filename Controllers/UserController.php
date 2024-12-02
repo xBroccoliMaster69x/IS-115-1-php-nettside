@@ -47,9 +47,9 @@ class UserController extends Controller {
     }
 
     // 
-    if ($_SESSION['user']['is_manager'] == 1) {
+    if ($_SESSION['user']['is_admin'] == 1) {
         
-        $this->view('manager', ['user' => $_SESSION['user']]);
+        $this->view('admin', ['user' => $_SESSION['user']]);
     } else {
        
         $this->view('dashboard', ['user' => $_SESSION['user']]);

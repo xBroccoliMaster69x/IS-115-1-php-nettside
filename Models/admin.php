@@ -173,5 +173,5 @@ class AdminModel{
         return $stmt->execute();
     }
 //#endregion  
-
+}
 ?>

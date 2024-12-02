@@ -7,6 +7,7 @@ include '../Public/header.php'; // Include the reusable header
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($title) ? $title : 'Admin Panel'; ?></title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <h1>Welcome to the <?= isset($title) ? $title : 'Admin Panel'; ?></h1>
