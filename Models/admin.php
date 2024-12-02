@@ -1,5 +1,5 @@
 <?php
-class adminModel{
+class AdminModel{
     private $pdo;
 
     public function __construct() { //constructor for adminModel, etablerer kontakt med hoteldb som rotbruker
@@ -24,32 +24,155 @@ class adminModel{
         }
     }
 
-    public function getRoom() { //returnerer assosciated array som inneholder rom fra rooms db
-        $sql = "SELECT roomNumber, floor, roomType, aCapacity, cCapacity, closeToElevator FROM rooms";
-        try{
-        $stmt = $this->pdo->query($sql);
-
-        $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if (!empty($rooms)) {
-            foreach ($rooms as $room) {
-                echo "Room Number: " . $room['roomNumber'] . "<br>";
-                echo "Floor: " . $room['floor'] . "<br>";
-                echo "Room Type: " . $room['roomType'] . "<br>";
-                echo "Adult Capacity: " . $room['aCapacity'] . "<br>";
-                echo "Child Capacity: " . $room['cCapacity'] . "<br>";
-                echo "Close to Elevator: " . ($room['closeToElevator'] ? 'Yes' : 'No') . "<br><br>";
-            }
+    public function getBookings($ID = null) {
+        if ($ID === null) {
+            $stmt = $this->pdo->query("SELECT * FROM booking");
         } else {
-            echo "No rooms found in the database.";
+            $stmt = $this->pdo->prepare("SELECT * FROM booking WHERE ID = :ID");
+            $stmt->bindParam(':ID', $ID, PDO::PARAM_INT);
         }
-    } catch (PDOException $e) {
-        echo "Query failed: " . $e->getMessage();
+    
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
-    return $rooms;
+    public function saveBooking($data) {
+        $stmt = $this->pdo->prepare("INSERT INTO booking (room_ID, user_ID, startdate, enddate, type) 
+                                     VALUES (:room_ID, :user_ID, :startdate, :enddate, :type)");
+    
+        $stmt->bindParam(':room_ID', $data['room_ID']);
+        $stmt->bindParam(':user_ID', $data['user_ID']);
+        $stmt->bindParam(':startdate', $data['startdate']);
+        $stmt->bindParam(':enddate', $data['enddate']);
+        $stmt->bindParam(':type', $data['type']);
+    
+        return $stmt->execute();
     }
+    public function updateBooking($data) {
+        $stmt = $this->pdo->prepare("UPDATE booking 
+                                     SET room_ID = :room_ID, user_ID = :user_ID, startdate = :startdate, enddate = :enddate, type = :type 
+                                     WHERE ID = :ID");
+    
+        $stmt->bindParam(':ID', $data['ID']);
+        $stmt->bindParam(':room_ID', $data['room_ID']);
+        $stmt->bindParam(':user_ID', $data['user_ID']);
+        $stmt->bindParam(':startdate', $data['startdate']);
+        $stmt->bindParam(':enddate', $data['enddate']);
+        $stmt->bindParam(':type', $data['type']);
+    
+        return $stmt->execute();
+    }
+            
+    public function deleteBooking($ID) {
+        $stmt = $this->pdo->prepare("DELETE FROM booking WHERE ID = :ID");
+        $stmt->bindParam(':ID', $ID, PDO::PARAM_INT);
+    
+        return $stmt->execute();
+    }
+    
 
 
+
+    
+//#region Section RoomType
+    public function saveRoomType($roomTypeData) { //lager array med variabler fra associativ array med felt til hotelDB, fra table
+        $roomTypeName         = $roomTypeData["typename"];
+        $descript             = $roomTypeData["descript"];
+        $acapacity            = $roomTypeData["acapacity"];
+        $ccapacity            = $roomTypeData["ccapacity"];
+    
+
+        $stmt = $this->pdo->prepare("INSERT INTO roomtype (typename, descript, acapacity, ccapacity)
+        VALUES (:typename, :descript, :acapacity, :ccapacity)"); //lager insert statement $stmt so 
+    
+    //binder variabler fra $roomData til $stmt evkivalenten
+        $stmt->bindParam(':typename', $roomTypeName);
+        $stmt->bindParam(':descript', $descript);
+        $stmt->bindParam(':acapacity', $acapacity);
+        $stmt->bindParam(':ccapacity', $ccapacity);
+
+    
+        
+        return $stmt->execute();
+    }
+
+    /* getter metode, returnerer alle rooms dersom param ikk er satt.*/
+    public function getRooms($ID = null) {
+        if ($ID === null) {
+            $stmt = $this->pdo->query("SELECT * FROM rooms");
+        } else {
+            $stmt = $this->pdo->prepare("SELECT * FROM rooms WHERE ID = :ID");
+            $stmt->bindParam(':ID', $ID, PDO::PARAM_INT);
+        }
+    
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function saveRoom($data) {
+        $stmt = $this->pdo->prepare("INSERT INTO rooms (roomname, floor, roomtype_ID, closetoelevator) 
+                                     VALUES (:roomname, :floor, :roomtype_ID, :closetoelevator)");
+    
+        $stmt->bindParam(':roomname', $data['roomname']);
+        $stmt->bindParam(':floor', $data['floor']);
+        $stmt->bindParam(':roomtype_ID', $data['roomtype_ID']);
+        $stmt->bindParam(':closetoelevator', $data['closetoelevator']);
+    
+        return $stmt->execute();
+    }
+    public function updateRoom($data) {
+        $stmt = $this->pdo->prepare("UPDATE rooms 
+                                     SET roomname = :roomname, floor = :floor, roomtype_ID = :roomtype_ID, closetoelevator = :closetoelevator 
+                                     WHERE ID = :ID");
+    
+        $stmt->bindParam(':id', $data['id']);
+        $stmt->bindParam(':roomname', $data['roomname']);
+        $stmt->bindParam(':floor', $data['floor']);
+        $stmt->bindParam(':roomtype_ID', $data['roomtype_ID']);
+        $stmt->bindParam(':closetoelevator', $data['closetoelevator']);
+    
+        return $stmt->execute();
+    }
+    public function deleteRoom($id) {
+        $stmt = $this->pdo->prepare("DELETE FROM rooms WHERE ID = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    
+        return $stmt->execute();
+    }
+                
+
+
+    /* getter metode, returnerer alle roomtype dersom param ikk er satt.*/
+    public function getRoomType($ID = null) {
+        if ($ID === null) {
+            // Fetch all room types
+            $stmt = $this->pdo->query("SELECT * FROM roomtype");
+        } else {
+            // Fetch a specific room type by ID
+            $stmt = $this->pdo->prepare("SELECT * FROM roomtype WHERE ID = :ID");
+            $stmt->bindParam(':ID', $ID, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(); // Returns an array of room types (or a single room type if you fetch by ID)
+    }
+
+    public function updateRoomType($data) {
+        $stmt = $this->pdo->prepare("UPDATE roomtype SET typename = :typename, descript = :descript, acapacity = :acapacity, ccapacity = :ccapacity WHERE ID = :ID");
+    
+        $stmt->bindParam(':ID', $data['ID']);
+        $stmt->bindParam(':typename', $data['typename']);
+        $stmt->bindParam(':descript', $data['descript']);
+        $stmt->bindParam(':acapacity', $data['acapacity']);
+        $stmt->bindParam(':ccapacity', $data['ccapacity']);
+    
+        return $stmt->execute();
+    }
+
+    public function deleteRoomType($ID) {
+        $stmt = $this->pdo->prepare("DELETE FROM roomtype WHERE ID = :ID");
+        $stmt->bindParam(':ID', $ID);
+        return $stmt->execute();
+    }
+//#endregion  
 
 
 
@@ -75,8 +198,30 @@ class adminModel{
 
 
 }
-$adminModel = new adminModel();
-$adminModel->getRoom();
+/*$adminModel = new adminModel();
+//$adminModel->getRoom();
+$r = array(
+"typename"   => "junior suite",
+"descript"       => "rom med 4 enkelsenger. Har 2 sofa senger tilgjengelig for barn. inneholder bad med badekar/dusj kombinasjon.",
+"acapacity"      => 4,
+"ccapacity"      =>2
+);
+//$adminModel->SaveRoomType($r);
+$a= $adminModel->getRoomType();
+
+
+if (!empty($a)) {
+    foreach ($a as $roomType) {
+        echo 'ID: ' . $roomType['ID'] . '<br>';
+        echo 'Type Name: ' . $roomType['typename'] . '<br>';
+        echo 'Description: ' . $roomType['descript'] . '<br>';
+        echo 'Adult Capacity: ' . $roomType['acapacity'] . '<br>';
+        echo 'Child Capacity: ' . $roomType['ccapacity'] . '<br>';
+        echo '<hr>'; // To separate the room types visually
+    }
+} else {
+    echo 'No room types found.';
+}*/
 
 
 ?>
