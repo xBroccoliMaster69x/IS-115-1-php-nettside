@@ -1,7 +1,7 @@
-<?php
+<?php //alt under room_admin er i prosessen av refaktorering
 require 'room_admin_controller.php';
 
-$controller = new Controller();
+$controller = new Controller(); //lager en kontroller fra room_admin_controller.php
 
 
 

@@ -1,7 +1,7 @@
 <?php
 class View {
 
-    public function renderAddRoom() {
+    public function renderAddRoom() {//renderer input form for romskapning. inneholder feletene som skal inn i hoteldb
         echo '<form action="room_admin_index.php" method="POST">
               Rom Nummer: <input type="number" name="roomNumber" min="100" max= "999" step="1" value=""><br>
               Etasje: <input type="number" name="floor" min= "1" max= "3" step="1" value=""><br>
@@ -12,13 +12,13 @@ class View {
 
               Kapasitet Voksne: <input type="number" name="aCapacity" min= "1" max "3" value=""><br>
               Kapasitet Barn: <input type="number" name="cCapacity" min= "0" max "3" value=""><br>
-              Nærme Heis: <input type= "checkbox" name= "closeToElevator" value="true"><br>
+              Nærme Heis: <input type= "checkbox" name= "closeToElevator" value="true"><br>       
               <input type="submit">
           </form>';
     }
 
 
-    public function render($message) {
+    public function render($message) { //renderer en parameter, $message, som kan 
         echo '<p>' . htmlspecialchars($message) . '</p>';
     }
 }

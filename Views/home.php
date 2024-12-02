@@ -20,12 +20,7 @@
             </nav>
         </div>
     </header>
-    <main style="padding-top: 80px;" margin="0 auto;">
-        <form action="Oppg4_2.php" method="POST">
-            Start Dato: <input type="date" name="startDato"><br>
-            Slutt Dato: <input type="date" name="sluttDato"><br>
-            <!--Adresse: <input type="text" name="adresse"><br>-->
-            <input type="submit">
+
         </form>
             <div>
                 <?php
@@ -36,10 +31,40 @@
 
                 ?>
             </div>
+
+
 </head>
 <body>
 
 <!-- ----------------------------------------->
+<?php
+class homeView{
+    function renderOrder(){
+        echo '<form action="room_admin_index.php" method="POST">
+        Insjekk Dato: <input type="date" name="insjekk" ><br>
+        Utsjekk Dato: <input type="date" name="utsjekk" ><br>
+        
+        Enkeltrom: <input type ="radio" id= "singleRoom" name="roomType" value="1"><br>
+        Dobbeltrom: <input type ="radio" id= "doubleRoom" name="roomType" value="2"><br>
+        Junior Suite: <input type ="radio" id= "juniorSuite" name="roomType" value="3"><br>
 
+        Kapasitet Voksne: <input type="number" name="aCapacity" min= "1" max "3" value=""><br>
+        Kapasitet Barn: <input type="number" name="cCapacity" min= "0" max "3" value=""><br>
+        Nærme Heis: <input type= "checkbox" name= "closeToElevator" value="true"><br>       
+        <input type="submit">
+    </form>';
+
+
+
+
+
+    }
+
+
+
+}
+$a = new homeView;
+$a->renderOrder();
+?>
 
 

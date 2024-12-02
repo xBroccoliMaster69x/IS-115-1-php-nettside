@@ -2,7 +2,7 @@
 class Model {
     private $pdo;
 
-    public function __construct() {
+    public function __construct() { //constructor for adminModel, etablerer kontakt med hoteldb som rotbruker
 
         $host = 'localhost';
         $db = 'hoteldb';
@@ -10,22 +10,22 @@ class Model {
         $pass = '';
         $charset = 'utf8mb4';
 
-        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset"; //lagrer data source name som paramenter
         $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, //thrower error ved error
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //returnerer data fra db som associated array.
+            PDO::ATTR_EMULATE_PREPARES   => false,              // setter emulator til false
         ];
 
-        try {
+        try { //tester db tilkobling
             $this->pdo = new PDO($dsn, $user, $pass, $options);
-        } catch (\PDOException $e) {
-            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        } catch (\PDOException $e) { //lagrer objektet av PDOException som $e
+            throw new \PDOException($e->getMessage(), (int)$e->getCode()); //returnerer feilmeld og feilkode fra $e()PDOException objektet
         }
     }
 
 
-    public function saveRoom($roomData) {
+    public function saveRoom($roomData) { //lager array med variabler fra associativ array med felt til hotelDB, fra table
         $roomNumber         = $roomData["roomNumber"];
         $floor              = $roomData["floor"];
         $roomType           = $roomData["roomType"];
@@ -35,9 +35,9 @@ class Model {
     
 
         $stmt = $this->pdo->prepare("INSERT INTO rooms (roomNumber, floor, roomType, aCapacity, cCapacity, closeToElevator)
-        VALUES (:roomNumber, :floor, :roomType, :aCapacity, :cCapacity, :closeToElevator)");
+        VALUES (:roomNumber, :floor, :roomType, :aCapacity, :cCapacity, :closeToElevator)"); //lager insert statement $stmt so 
     
-
+//binder variabler fra $roomData til $stmt evkivalenten
         $stmt->bindParam(':roomNumber', $roomNumber);
         $stmt->bindParam(':floor', $floor);
         $stmt->bindParam(':roomType', $roomType);
