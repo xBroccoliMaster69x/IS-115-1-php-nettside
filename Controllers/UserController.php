@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 require_once '../Models/user.php';
 
@@ -23,15 +22,14 @@ class UserController extends Controller {
             var_dump($username);
             var_dump($user['brukernavn']);
             var_dump($password);
-            var_dump($user['passord']);
-            var_dump(password_verify('Anakat01.', '$2y$10$yKwKyWkZKRUeAxmkdbH1jeUpdlCkucLC0bMrGaEnt9D'));
-    
+            var_dump($user['passord']); 
 
 
             if ($user && password_verify($password, $user['passord'])) {
                 session_start();
                 $_SESSION['user'] = $user;
-
+    
+                // Redirecter til dashboard basert på type bruker 
                 header("Location: /phpnettside/public/index.php?url=User/dashboard");
                 exit;
             } else {
@@ -42,14 +40,32 @@ class UserController extends Controller {
 
     public function dashboard() {
         session_start();
-        if (!isset($_SESSION['user'])) {
-            header("Location: /phpnettside/public/index.php?url=User/login");
-            exit;
-        }
-
-        $this->view('dashboard', ['user' => $_SESSION['user']]);
+        // Check if the user is logged in
+    if (!isset($_SESSION['user'])) {
+        header("Location: /phpnettside/public/index.php?url=User/login");
+        exit;
     }
 
+    // 
+    if ($_SESSION['user']['is_manager'] == 1) {
+        
+        $this->view('manager', ['user' => $_SESSION['user']]);
+    } else {
+       
+        $this->view('dashboard', ['user' => $_SESSION['user']]);
+    }
+    }
+
+
+    public function logout() {
+        session_start();
+        session_unset(); // renser bort alle variabler fra session
+        session_destroy(); // ødelegger session
+        header("Location: /phpnettside/public/index.php?url=User/login"); 
+        exit;
+    }
+    
+
+
 }
-=======
->>>>>>> 06bfc943c7500c868494991ced202e24c896d362
+

@@ -19,11 +19,7 @@ class UserModel {
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':adresse', $adresse);
         $stmt->bindValue(':brukernavn', $brukernavn);
-<<<<<<< HEAD
-        $stmt->bindValue(':passord', $passord); // bruker allerede hashed passord fra vontroller
-=======
-        $stmt->bindValue(':passord', password_hash($passord, PASSWORD_DEFAULT));
->>>>>>> 06bfc943c7500c868494991ced202e24c896d362
+        $stmt->bindValue(':passord', $passord); // bruker allerede hashed passord fra controller
 
        return $stmt->execute();
      } catch (PDOException $e) {
@@ -39,7 +35,7 @@ class UserModel {
         $stmt->bindValue(':username', $username);
         $stmt->execute();
     
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Fetches the entire user row as an associative array
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Fetche som assosiative array
         if (!$stmt->execute()) {
             die("forrespøring feil: " . implode(", ", $stmt->errorInfo()));
         }
